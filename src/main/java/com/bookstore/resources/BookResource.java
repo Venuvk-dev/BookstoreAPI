@@ -4,6 +4,7 @@
  */
 package com.bookstore.resources;
 
+import com.bookstore.exception.BookNotFoundException;
 import com.bookstore.model.Book;
 //import com.sun.org.slf4j.Logger;
 //import com.sun.org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -41,4 +43,24 @@ public class BookResource {
         logger.info("Getting all books");         
         return Response.ok(books.values()).build();        //response.ok means HTTP 200 ok.
     }
+    
+    @GET
+    @Path("/{id}")
+    public Response getBookById(@PathParam("id") int id){
+        logger.info("Getting a book by an id : "+id);
+        Book book=books.get(id);           //getting a book of the particular from the book map
+        if (book != null) {                //if there is a book in the id will return the particular book
+            return Response.ok(book).build();
+        }
+        else{
+            throw new BookNotFoundException("Book with the id "+id+" not found");
+        }
+    }
+
+    
+    
+    
+    
+    
+    
 }
