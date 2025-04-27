@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -68,6 +69,19 @@ public class AuthorResource {
         authors.put(author.getId(), author);
         return Response.status(Response.Status.CREATED).entity(author).build();
     }
-    
-    
+    @PUT
+    @Path("/{id}")
+    public Response updateAuthor(@PathParam("id") int id, Author updatedAuthor) {
+        logger.info("PUT request to update author with id: " + id);
+        Author existingAuthor = authors.get(id);
+        if (existingAuthor == null) {
+            throw new AuthorNotFoundException("Author with ID " + id + " not found for update");
+        }
+        
+        existingAuthor.setName(updatedAuthor.getName());
+        existingAuthor.setBiography(updatedAuthor.getBiography());
+        
+        authors.put(id, existingAuthor);
+        return Response.ok(existingAuthor).build();
+    }
 }
