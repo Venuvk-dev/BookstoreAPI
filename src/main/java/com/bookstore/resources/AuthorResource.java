@@ -4,12 +4,14 @@
  */
 package com.bookstore.resources;
 
+import com.bookstore.exception.AuthorNotFoundException;
 import com.bookstore.model.Author;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -39,5 +41,16 @@ public class AuthorResource {
         logger.info("Getting all authors");
         return Response.ok(authors.values()).build();
     }
-
+    
+     @GET
+    @Path("/{id}")
+    public Response getAuthorById(@PathParam("id") int id) {
+        logger.info("Getting an author by id: " + id);
+        Author author = authors.get(id);
+        if (author != null) {
+            return Response.ok(author).build();
+        } else {
+            throw new AuthorNotFoundException("Author with ID " + id + " not found");
+        }
+    }
 }
