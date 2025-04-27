@@ -13,17 +13,20 @@ public class Book {
     private String title;              //title name of the book
     private String author;             //author's name
     private double price;
+    private String isbn;
     private int publicationYear;       //storing the year for the book 
     private int stockQuantity;         //available stock of the book      
     
     public Book(){};      //required for the api creating frameworks(jersey+jackson)
 
-    public Book(int id, String title, String author, double price ,int publicationYear) {
+    public Book(int id, String title, String author, double price ,String isbn,int publicationYear, int stockQuantity) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.price = price;
+        this.isbn=isbn;
         this.publicationYear=publicationYear;
+        this.stockQuantity=stockQuantity;
     }
 
     public int getId() {
@@ -74,11 +77,22 @@ public class Book {
         this.stockQuantity = stockQuantity;
     }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
     @Override
     public String toString() {
-        return "Book{" + "id=" + id + ", title=" + title + ", author=" +
-                author + ", price=" + price + ", publicationYear=" + publicationYear +
+        return "Book{" + "id=" + id + ", title=" + title +
+                ", author=" + author + ", price=" + price + ", isbn=" + isbn +
+                ", publicationYear=" + publicationYear +
                 ", stockQuantity=" + stockQuantity + '}';
         //toString method may help in future to display the details of the instances
     }
+
+    
 }
