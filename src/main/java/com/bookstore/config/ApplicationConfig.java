@@ -4,14 +4,23 @@
  */
 package com.bookstore.config;
 
-/**
- *
- * @author USER
- */
+import com.bookstore.resources.AuthorResource;
+import com.bookstore.resources.BookResource;
+import com.bookstore.resources.CartResource;
+import com.bookstore.resources.CustomerResource;
+import com.bookstore.resources.OrderResource;
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import org.glassfish.jersey.server.ResourceConfig;
 
-@ApplicationPath("/api") // base URL path for all your resources
-public class ApplicationConfig extends Application {   //Tells JAX-RS that this is the startup config.
-   //No need to override anything for this coursework.
+@ApplicationPath("/api")
+public class ApplicationConfig extends ResourceConfig {
+    public ApplicationConfig() {
+        register(BookResource.class);
+        register(AuthorResource.class);
+        register(CustomerResource.class);
+        register(CartResource.class);
+        register(OrderResource.class);
+        
+        // If you want, you can also register exception mappers here (optional)
+    }
 }
