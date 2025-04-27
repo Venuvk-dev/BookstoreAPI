@@ -10,6 +10,7 @@ import com.bookstore.model.Author;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -83,5 +84,15 @@ public class AuthorResource {
         
         authors.put(id, existingAuthor);
         return Response.ok(existingAuthor).build();
+    }
+    @DELETE
+    @Path("/{id}")
+    public Response deleteAuthor(@PathParam("id") int id) {
+        logger.info("DELETE request for author with id: " + id);
+        Author removedAuthor = authors.remove(id);
+        if (removedAuthor == null) {
+            throw new AuthorNotFoundException("Author with ID " + id + " not found for deletion");
+        }
+        return Response.noContent().build();
     }
 }
