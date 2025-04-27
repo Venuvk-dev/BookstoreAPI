@@ -41,7 +41,7 @@ public class Author {
         return biography;
     }
 
-    public void setNationality(String biography) {
+    public void setBiography(String biography) {
         this.biography = biography;
     }
 
