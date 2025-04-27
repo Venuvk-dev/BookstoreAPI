@@ -5,13 +5,16 @@
 package com.bookstore.resources;
 
 import com.bookstore.exception.BookNotFoundException;
+import com.bookstore.exception.InvalidInputException;
 import com.bookstore.model.Book;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Constants;
 //import com.sun.org.slf4j.Logger;
 //import com.sun.org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -32,6 +35,7 @@ public class BookResource {
     
     private static final Logger logger =LoggerFactory.getLogger(BookResource.class);   //to log crud events
     private static Map<Integer, Book> books=new HashMap<>();   //A map to store books as temporary database
+    private static int nextId=3;
     
     static{
         books.put(1, new Book(1,"Java Basics", "Venukanth", 39.99,"isbn001", 2020, 10));
@@ -55,6 +59,19 @@ public class BookResource {
         else{
             throw new BookNotFoundException("Book with the id "+id+" not found");
         }
+    }
+    
+    @POST                                                 //a HTTP method for creating 
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addBook(Book book){
+        logger.info("POST request for add a new book");
+        if(book.getAuthor()==null || book.getIsbn()==null || book.getTitle()==null ){  //validating to avoid storing incomplete data 
+            throw new InvalidInputException("Title, Author, ISBN required");
+        }
+        
+        book.setId(nextId++);
+        books.put(book.getId(), book);
+        return Response.status(Response.Status.CREATED).entity(book).build();
     }
 
     
