@@ -5,11 +5,13 @@
 package com.bookstore.resources;
 
 import com.bookstore.exception.AuthorNotFoundException;
+import com.bookstore.exception.InvalidInputException;
 import com.bookstore.model.Author;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -29,6 +31,7 @@ import org.slf4j.LoggerFactory;
 public class AuthorResource {
     private static final Logger logger = LoggerFactory.getLogger(AuthorResource.class);
     private static final Map<Integer, Author> authors = new ConcurrentHashMap<>();
+    private static int nextId=4;
     
     static {
     authors.put(1, new Author(1, "J.K. Rowling", "British author of Harry Potter"));
@@ -53,4 +56,18 @@ public class AuthorResource {
             throw new AuthorNotFoundException("Author with ID " + id + " not found");
         }
     }
+    
+    @POST
+    public Response addAuthor(Author author) {
+        logger.info("POST request to add a new author");
+        if (author.getName() == null || author.getBiography() == null) {
+            throw new InvalidInputException("Name and Biography are required");
+        }
+        
+        author.setId(nextId++);
+        authors.put(author.getId(), author);
+        return Response.status(Response.Status.CREATED).entity(author).build();
+    }
+    
+    
 }
