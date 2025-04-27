@@ -11,14 +11,14 @@ package com.bookstore.model;
 public class Author {
     private int id;         //unique id for storing authors 
     private String name;
-    private String nationality;    //country of the author
+    private String biography;    //country of the author
     
     public Author(){};
 
-    public Author(int id, String name, String nationality) {
+    public Author(int id, String name, String biography) {
         this.id = id;
         this.name = name;
-        this.nationality = nationality;
+        this.biography = biography;
     }
 
     public int getId() {
@@ -37,18 +37,18 @@ public class Author {
         this.name = name;
     }
 
-    public String getNationality() {
-        return nationality;
+    public String getBiography() {
+        return biography;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setNationality(String biography) {
+        this.biography = biography;
     }
 
     @Override
     public String toString() {
         return "Author{" + "id=" + id + ", name=" + name + 
-                ", nationality=" + nationality + '}';
+                ", nationality=" + biography + '}';
     }
     
     
