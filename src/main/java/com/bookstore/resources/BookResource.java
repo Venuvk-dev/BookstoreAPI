@@ -13,6 +13,7 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.Constants;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -93,6 +94,17 @@ public class BookResource {
         
         books.put(id, existingBook);
         return Response.ok(existingBook).build();
+    }
+    
+    @DELETE
+    @Path("/{id}")
+    public Response deleteBook(@PathParam("id")int id){
+        logger.info("Delete request for the book with id : "+id );
+        Book removeBook=books.remove(id);
+        if (removeBook == null) {
+        throw new BookNotFoundException("Book with ID " + id + " not found for deletion");
+        }
+        return Response.noContent().build();
     }
 
     
