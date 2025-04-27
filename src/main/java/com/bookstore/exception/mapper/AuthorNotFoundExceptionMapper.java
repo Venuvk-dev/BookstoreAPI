@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.bookstore.exception.mapper;
-
 
 import com.bookstore.exception.AuthorNotFoundException;
 import org.slf4j.Logger;
@@ -20,22 +15,25 @@ import javax.ws.rs.ext.Provider;
  * @author USER
  */
 
-@Provider                                 //jax-rs will automatically detect this when server will started
-public class AuthorNotFoundExceptionMapper implements ExceptionMapper<AuthorNotFoundException>{
-    //log errors in the terminal for backend monitoring
-    private static final Logger logger=LoggerFactory.getLogger(AuthorNotFoundExceptionMapper.class);
-    
-    public Response toResponse(AuthorNotFoundException exception){
-        logger.error("Author not found : ", exception.getMessage());
-        
-        Map<String, String> errorMessage=new HashMap<>();       //a map to store 2 string values error and the particular error message
-        errorMessage.put("error", exception.getMessage());      
-        
+@Provider  // JAX-RS will automatically detect this when the server starts
+public class AuthorNotFoundExceptionMapper implements ExceptionMapper<AuthorNotFoundException> {
+
+    // Log errors in the terminal for backend monitoring
+    private static final Logger logger = LoggerFactory.getLogger(AuthorNotFoundExceptionMapper.class);
+
+    @Override
+    public Response toResponse(AuthorNotFoundException exception) {
+        // Log the full exception with the stack trace
+        logger.error("The particular Author not found: ", exception);
+
+        // Create a map to store the error message
+        Map<String, String> errorMessage = new HashMap<>();
+        errorMessage.put("error", exception.getMessage());
+
+        // Return 404 with a JSON response
         return Response.status(Response.Status.NOT_FOUND)
-                .entity(errorMessage)
-                .type(MediaType.APPLICATION_JSON)
-                .build();
+                       .entity(errorMessage)
+                       .type(MediaType.APPLICATION_JSON)
+                       .build();
     }
-    
-    
 }

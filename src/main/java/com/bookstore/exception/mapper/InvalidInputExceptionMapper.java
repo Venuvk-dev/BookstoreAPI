@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.bookstore.exception.mapper;
 
 import com.bookstore.exception.InvalidInputException;
@@ -19,19 +15,25 @@ import javax.ws.rs.ext.Provider;
  * @author USER
  */
 
-@Provider
-public class InvalidInputExceptionMapper implements ExceptionMapper<InvalidInputException>{
-    private static final Logger logger =LoggerFactory.getLogger(InvalidInputExceptionMapper.class);
-    
-    public Response toResponse(InvalidInputException exception){
-        logger.error("Invalid input entries : "+exception.getMessage());
-        
-        Map<String , String > errorMessage=new HashMap<>();
-        errorMessage.put("Error", exception.getMessage());
-        
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity(errorMessage)
-                .type(MediaType.APPLICATION_JSON)
-                .build();
+@Provider  // JAX-RS will automatically detect this when the server starts
+public class InvalidInputExceptionMapper implements ExceptionMapper<InvalidInputException> {
+
+    // Log errors in the terminal for backend monitoring
+    private static final Logger logger = LoggerFactory.getLogger(InvalidInputExceptionMapper.class);
+
+    @Override
+    public Response toResponse(InvalidInputException exception) {
+        // Log the full exception with stack trace
+        logger.error("Invalid input entries: ", exception);
+
+        // Create a map to store the error message
+        Map<String, String> errorMessage = new HashMap<>();
+        errorMessage.put("error", exception.getMessage());
+
+        // Return 400 with a JSON response indicating invalid input
+        return Response.status(Response.Status.BAD_REQUEST)  // Use BAD_REQUEST (400) instead of NOT_FOUND
+                       .entity(errorMessage)
+                       .type(MediaType.APPLICATION_JSON)
+                       .build();
     }
 }

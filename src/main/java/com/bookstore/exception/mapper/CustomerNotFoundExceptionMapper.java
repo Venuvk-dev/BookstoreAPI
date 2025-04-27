@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.bookstore.exception.mapper;
 
 import com.bookstore.exception.CustomerNotFoundException;
@@ -19,19 +15,25 @@ import javax.ws.rs.ext.Provider;
  * @author USER
  */
 
-@Provider
-public class CustomerNotFoundExceptionMapper implements ExceptionMapper<CustomerNotFoundException>{
-    private static final Logger logger =LoggerFactory.getLogger(CustomerNotFoundExceptionMapper.class);
-    
-    public Response toResponse(CustomerNotFoundException exception){
-        logger.error("Customer not found : "+exception.getMessage());
-        
-        Map<String , String > errorMessage=new HashMap<>();
-        errorMessage.put("Error", exception.getMessage());
-        
+@Provider  // JAX-RS will automatically detect this when the server starts
+public class CustomerNotFoundExceptionMapper implements ExceptionMapper<CustomerNotFoundException> {
+
+    // Log errors in the terminal for backend monitoring
+    private static final Logger logger = LoggerFactory.getLogger(CustomerNotFoundExceptionMapper.class);
+
+    @Override
+    public Response toResponse(CustomerNotFoundException exception) {
+        // Log the full exception with stack trace
+        logger.error("The particular Customer not found: ", exception);
+
+        // Create a map to store the error message
+        Map<String, String> errorMessage = new HashMap<>();
+        errorMessage.put("error", exception.getMessage());
+
+        // Return 404 with a JSON response
         return Response.status(Response.Status.NOT_FOUND)
-                .entity(errorMessage)
-                .type(MediaType.APPLICATION_JSON)
-                .build();
+                       .entity(errorMessage)
+                       .type(MediaType.APPLICATION_JSON)
+                       .build();
     }
 }

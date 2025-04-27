@@ -4,6 +4,13 @@
  */
 package com.bookstore.config;
 
+import com.bookstore.exception.mapper.AuthorNotFoundExceptionMapper;
+import com.bookstore.exception.mapper.BookNotFoundExceptionMapper;
+import com.bookstore.exception.mapper.CartNotFoundExceptionMapper;
+import com.bookstore.exception.mapper.CustomerNotFoundExceptionMapper;
+import com.bookstore.exception.mapper.InvalidInputExceptionMapper;
+import com.bookstore.exception.mapper.OrderNotFoundExceptionMapper;
+import com.bookstore.exception.mapper.OutOfStockExceptionMapper;
 import com.bookstore.resources.AuthorResource;
 import com.bookstore.resources.BookResource;
 import com.bookstore.resources.CartResource;
@@ -22,5 +29,15 @@ public class ApplicationConfig extends ResourceConfig {
         register(OrderResource.class);
         
         // If you want, you can also register exception mappers here (optional)
+        register(BookNotFoundExceptionMapper.class);
+        register(AuthorNotFoundExceptionMapper.class);
+        register(CartNotFoundExceptionMapper.class);
+        register(CustomerNotFoundExceptionMapper.class);
+        register(OrderNotFoundExceptionMapper.class);
+        register(InvalidInputExceptionMapper.class);
+        register(OutOfStockExceptionMapper.class);
+        
+        
+        
     }
 }

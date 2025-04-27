@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.bookstore.exception.mapper;
-
 
 import com.bookstore.exception.CartNotFoundException;
 import org.slf4j.Logger;
@@ -20,19 +15,25 @@ import javax.ws.rs.ext.Provider;
  * @author USER
  */
 
-@Provider
-public class CartNotFoundExceptionMapper implements ExceptionMapper<CartNotFoundException>{
-    private static final Logger logger =LoggerFactory.getLogger(CartNotFoundExceptionMapper.class);
-    
-    public Response toResponse(CartNotFoundException exception){
-        logger.error("Cart not found : "+exception.getMessage());
-        
-        Map<String , String > errorMessage=new HashMap<>();
-        errorMessage.put("Error", exception.getMessage());
-        
+@Provider  // JAX-RS will automatically detect this when the server starts
+public class CartNotFoundExceptionMapper implements ExceptionMapper<CartNotFoundException> {
+
+    // Log errors in the terminal for backend monitoring
+    private static final Logger logger = LoggerFactory.getLogger(CartNotFoundExceptionMapper.class);
+
+    @Override
+    public Response toResponse(CartNotFoundException exception) {
+        // Log the full exception with stack trace
+        logger.error("The particular Cart not found: ", exception);
+
+        // Create a map to store the error message
+        Map<String, String> errorMessage = new HashMap<>();
+        errorMessage.put("error", exception.getMessage());
+
+        // Return 404 with a JSON response
         return Response.status(Response.Status.NOT_FOUND)
-                .entity(errorMessage)
-                .type(MediaType.APPLICATION_JSON)
-                .build();
+                       .entity(errorMessage)
+                       .type(MediaType.APPLICATION_JSON)
+                       .build();
     }
 }
