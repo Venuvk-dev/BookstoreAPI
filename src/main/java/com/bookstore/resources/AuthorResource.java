@@ -34,6 +34,10 @@ public class AuthorResource {
     authors.put(3, new Author(3, "Jane Austen", "Known for Pride and Prejudice"));
     }
     
-
+    @GET
+    public Response getAllAuthors(){
+        logger.info("Getting all authors");
+        return Response.ok(authors.values()).build();
+    }
 
 }
